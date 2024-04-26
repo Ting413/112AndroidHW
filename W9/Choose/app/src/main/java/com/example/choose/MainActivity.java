@@ -20,18 +20,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void button_Click(View view) {
         String str = "";
-        // 获取性别
         RadioButton boy = findViewById(R.id.rdbBoy);
         if (boy.isChecked())
             str += "男\n";
         RadioButton girl = findViewById(R.id.rdbGirl);
         if (girl.isChecked())
             str += "女\n";
-        // 获取门票种类
         RadioGroup type = findViewById(R.id.rgType);
         int selectedTypeId = type.getCheckedRadioButtonId();
         if (selectedTypeId == -1) {
-            // 如果未选择票种，显示错误信息
             Toast.makeText(this, "請選取票種", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -46,19 +43,16 @@ public class MainActivity extends AppCompatActivity {
 
         str += ticketType + "\n";
 
-        // 获取购买张数
         EditText quantityEditText = findViewById(R.id.etTicketQuantity);
         String quantityStr = quantityEditText.getText().toString();
 
         if (quantityStr.isEmpty()) {
-            // 如果购买张数为空，显示错误信息
             Toast.makeText(this, "請輸入購買張數", Toast.LENGTH_SHORT).show();
             return;
         }
 
         int quantity = Integer.parseInt(quantityStr);
 
-        // 计算金额
         int price = calculatePrice(selectedTypeId, quantity);
         str += "購買張數：" + quantity + " 張\n";
         str += "金額：" + price + " 元";
@@ -80,18 +74,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void button2_Click(View view) {
-        // 获取lblOutput的文本
         TextView output = findViewById(R.id.lblOutput);
         String outputText = output.getText().toString();
 
-        // 创建Intent对象，指向ShowChoose应用程序中的MainActivity
         Intent intent = new Intent();
         intent.setClassName("com.example.showchoose", "com.example.showchoose.MainActivity");
 
-        // 将数据放入Intent中
         intent.putExtra("outputText", outputText);
 
-        // 启动ShowChoose应用程序中的MainActivity并传递Intent
         startActivity(intent);
     }
 }
