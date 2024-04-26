@@ -1,9 +1,12 @@
+//A111222029
 package com.example.choose;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -16,20 +19,59 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        calculateAndUpdatePrice();
+
+
+        RadioGroup genderGroup = findViewById(R.id.rgGender);
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                calculateAndUpdatePrice();
+            }
+        });
+
+        RadioGroup typeGroup = findViewById(R.id.rgType);
+        typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                calculateAndUpdatePrice();
+            }
+        });
+
+        EditText quantityEditText = findViewById(R.id.etTicketQuantity);
+        quantityEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculateAndUpdatePrice();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
-    public void button_Click(View view) {
+
+
+    private void calculateAndUpdatePrice() {
         String str = "";
+
         RadioButton boy = findViewById(R.id.rdbBoy);
         if (boy.isChecked())
             str += "男\n";
         RadioButton girl = findViewById(R.id.rdbGirl);
         if (girl.isChecked())
             str += "女\n";
+
         RadioGroup type = findViewById(R.id.rgType);
         int selectedTypeId = type.getCheckedRadioButtonId();
         if (selectedTypeId == -1) {
-            Toast.makeText(this, "請選取票種", Toast.LENGTH_SHORT).show();
+            TextView output = findViewById(R.id.lblOutput);
+            output.setText(str);
             return;
         }
 
@@ -43,11 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
         str += ticketType + "\n";
 
+
         EditText quantityEditText = findViewById(R.id.etTicketQuantity);
         String quantityStr = quantityEditText.getText().toString();
 
         if (quantityStr.isEmpty()) {
-            Toast.makeText(this, "請輸入購買張數", Toast.LENGTH_SHORT).show();
+            TextView output = findViewById(R.id.lblOutput);
+            output.setText(str);
             return;
         }
 
